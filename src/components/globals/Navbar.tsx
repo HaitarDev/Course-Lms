@@ -1,8 +1,7 @@
-import { LogIn, Menu } from "lucide-react";
-import { Button } from "../ui/button";
 import Image from "next/image";
 import LoginBtn from "./LoginBtn";
 import MobileSidebar from "@/app/(dashboard)/_components/MobileSidebar";
+import SearchBar from "../ui/SearchBar";
 
 function Navbar() {
   return (
@@ -21,10 +20,11 @@ function Navbar() {
             alt="logo"
             width={130}
             height={60}
-            className=""
           />
         </div>
-        <div className="flex-grow mx-10">SearchBar</div>
+        <div className=" mx-10 lg:w-[600px]">
+          <SearchBar />
+        </div>
         <LoginBtn />
       </div>
     </div>

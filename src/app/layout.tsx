@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/globals/Navbar";
+import SideBar from "@/components/globals/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,10 @@ export default function RootLayout({
       <ClerkProvider>
         <body className={cn("min-h-screen h-screen", inter.className)}>
           <Navbar />
-          <main className="h-full">{children}</main>
+          <main className="h-full flex">
+            <SideBar />
+            <div className="w-full">{children}</div>
+          </main>
         </body>
       </ClerkProvider>
     </html>
