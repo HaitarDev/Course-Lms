@@ -1,30 +1,28 @@
-import { CalendarDays, Code, Compass, Trophy } from "lucide-react";
+import { BarChart3, Compass, Layout, List } from "lucide-react";
 import { FaDiscord } from "react-icons/fa";
 
 export const SIDEBAR_TABS = [
   {
-    label: "Browse",
+    label: "Dashboard",
     href: "/",
+    icon: <Layout />,
+  },
+  {
+    label: "Browse",
+    href: "/search",
     icon: <Compass />,
   },
+];
+
+export const TEACHER_TABS = [
   {
-    label: "Leaderboard",
-    href: "/leaderboard",
-    icon: <Trophy />,
+    label: "Courses",
+    href: "/teacher/courses",
+    icon: <List />,
   },
   {
-    label: "Discord",
-    href: "/discord",
-    icon: <FaDiscord className="w-6 h-6" />,
-  },
-  {
-    label: "Events",
-    href: "/events",
-    icon: <CalendarDays />,
-  },
-  {
-    label: "Problems",
-    href: "/problems",
-    icon: <Code />,
+    label: "Analytics",
+    href: "/teacher/analytics",
+    icon: <BarChart3 />,
   },
 ];

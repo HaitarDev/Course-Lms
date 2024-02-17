@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { ClerkProvider } from "@clerk/nextjs";
+
 import Navbar from "@/components/globals/Navbar";
 import SideBar from "@/components/globals/SideBar";
 
@@ -20,15 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ClerkProvider>
-        <body className={cn("min-h-screen h-screen", inter.className)}>
-          <Navbar />
-          <main className="h-full flex">
-            <SideBar />
-            <div className="w-full">{children}</div>
-          </main>
-        </body>
-      </ClerkProvider>
+      <body className={cn("min-h-screen h-screen", inter.className)}>
+        <Navbar />
+        <main className="h-full flex">
+          <SideBar />
+          <div className="w-full">{children}</div>
+        </main>
+      </body>
     </html>
   );
 }

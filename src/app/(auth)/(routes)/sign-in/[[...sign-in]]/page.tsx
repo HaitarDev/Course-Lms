@@ -1,5 +1,3 @@
-import { SignIn } from "@clerk/nextjs";
-
 export default function Signin() {
-  return <SignIn afterSignInUrl={"/"} />;
+  return <div></div>;
 }
