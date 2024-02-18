@@ -49,7 +49,6 @@ const authOptions: NextAuthOptions = {
         );
 
         if (!passwordMatch) return null;
-
         const { password: newPassword, ...rest } = existingUser;
 
         return rest;
@@ -57,6 +56,28 @@ const authOptions: NextAuthOptions = {
     }),
   ],
 
+  // here we pass data that we want to client session
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+        },
+      };
+    },
+  },
   session: {
     strategy: "jwt",
   },

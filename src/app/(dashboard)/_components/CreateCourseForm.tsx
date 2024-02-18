@@ -1,4 +1,5 @@
 "use client";
+import { createCourse } from "@/app/actions/createCourse";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,20 +13,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { createCourseSchema } from "@/utils/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-type FormType = z.infer<typeof createCourseSchema>;
+export type FormType = z.infer<typeof createCourseSchema>;
 function CreateCourseForm() {
+  const session = useSession();
+  const user = session?.data?.user;
+  console.log(user);
+
   const form = useForm<FormType>({
     resolver: zodResolver(createCourseSchema),
     defaultValues: {
-      name: "",
+      title: "",
+      userId: "",
     },
   });
 
-  const onSubmit = (values: FormType) => {
-    console.log(values);
+  const onSubmit = async (values: FormType) => {
+    const data = await createCourse(values);
   };
   return (
     <Form {...form}>
@@ -35,7 +42,7 @@ function CreateCourseForm() {
       >
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Course name</FormLabel>
@@ -46,6 +53,21 @@ function CreateCourseForm() {
                 This is your public course name.
               </FormDescription>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="userId"
+          render={({ field }) => (
+            <FormItem hidden>
+              <FormControl>
+                <Input
+                  placeholder="Digital Marketing ..."
+                  {...field}
+                  value={user?.id}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
