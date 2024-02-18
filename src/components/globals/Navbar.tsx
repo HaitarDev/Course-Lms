@@ -4,10 +4,13 @@ import Image from "next/image";
 import LoginBtn from "./LogoutBtn";
 import MobileSidebar from "@/app/(dashboard)/_components/MobileSidebar";
 import SearchBar from "../ui/SearchBar";
-import LogoutBtn from "./LogoutBtn";
+
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useSession } from "next-auth/react";
+import UserBtn from "./UserBtn";
 
 function Navbar() {
   const pathname = usePathname();
@@ -27,7 +30,10 @@ function Navbar() {
       {/* mobile */}
       <div className="lg:hidden flex justify-between items-center h-full">
         <MobileSidebar />
-        {renderTeacherOrExitBtn}
+        <div className="flex gap-1">
+          {renderTeacherOrExitBtn}
+          <UserBtn />
+        </div>
       </div>
 
       {/* large */}
@@ -43,7 +49,10 @@ function Navbar() {
         <div className=" mx-10 lg:w-[600px]">
           <SearchBar />
         </div>
-        {renderTeacherOrExitBtn}
+        <div className="flex gap-1">
+          {renderTeacherOrExitBtn}
+          <UserBtn />
+        </div>
       </div>
     </div>
   );
