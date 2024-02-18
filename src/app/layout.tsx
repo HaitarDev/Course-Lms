@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-import Navbar from "@/components/globals/Navbar";
-import SideBar from "@/components/globals/SideBar";
+import SessionAuth from "@/components/globals/SessionAuth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +18,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn("min-h-screen h-screen", inter.className)}>
-        <Navbar />
-        <main className="h-full flex">
-          <SideBar />
-          <div className="w-full">{children}</div>
-        </main>
+    <html lang="en" className="h-full overflow-hidden">
+      <body className={cn(" h-full", inter.className)}>
+        <SessionAuth>
+          <main className="h-full flex">
+            <div className="w-full">{children}</div>
+          </main>
+        </SessionAuth>
       </body>
     </html>
   );
