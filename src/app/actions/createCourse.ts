@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 
 export const createCourse = async (values: FormType) => {
   try {
-    const data = await prisma?.course.create({
+    const data = await prisma.course.create({
       data: {
         title: values.title,
         userId: values.userId,

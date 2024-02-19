@@ -1,11 +1,12 @@
 import IconWrapper from "@/components/globals/IconWrapper";
+import { Button } from "@/components/ui/button";
 import authOptions from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
-import { LayoutDashboard } from "lucide-react";
+import { Edit, LayoutDashboard } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import EditTitle from "./_components/EditTitle";
 async function CoursePage({ params }: { params: { courseId: string } }) {
-  console.log(params.courseId);
   const course = await prisma.course.findUnique({
     where: {
       id: params.courseId,
@@ -50,6 +51,8 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
         <IconWrapper icon={<LayoutDashboard />} size="lg" />
         <h2 className="text-xl text-slate-800">Customize your course</h2>
       </div>
+      {/* grid */}
+      <EditTitle course={course} />
     </div>
   );
 }
