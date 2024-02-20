@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 
 import { Course } from "@prisma/client";
-import { EditIcon, ImageIcon, PlusCircle } from "lucide-react";
+import { EditIcon, FileImage, ImageIcon, PlusCircle } from "lucide-react";
 import { useState } from "react";
 
 import { z } from "zod";
@@ -101,7 +101,7 @@ function EditImage({ course }: { course: Course }) {
           </>
         ) : (
           <div className="relative aspect-video ">
-            {!isEdit && course.imageUrl && (
+            {!isEdit && course.imageUrl ? (
               <Image
                 src={course.imageUrl}
                 alt="course image"
@@ -109,6 +109,13 @@ function EditImage({ course }: { course: Course }) {
                 loading="lazy"
                 className="rounded-md object-cover"
               />
+            ) : (
+              <div className="relative aspect-video bg-gray-200 rounded-md flex flex-col items-center justify-center">
+                <FileImage size={100} className="text-slate-500" />
+                <p className="text-xs text-muted-foreground mt-4">
+                  You have no image yet
+                </p>
+              </div>
             )}
           </div>
         )}
