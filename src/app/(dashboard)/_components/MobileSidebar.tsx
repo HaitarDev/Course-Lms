@@ -7,8 +7,11 @@ import { cn } from "@/lib/utils";
 import { isActive } from "@/utils/isActive";
 import { Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 function MobileSidebar() {
+  const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -16,7 +19,7 @@ function MobileSidebar() {
   const tabs = isTeacherMode ? TEACHER_TABS : SIDEBAR_TABS;
 
   return (
-    <Sheet>
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
       <SheetTrigger>
         <div className="p-2 rounded-full hover:bg-slate-100">
           <Menu />
@@ -33,7 +36,10 @@ function MobileSidebar() {
               className={cn("w-full justify-start gap-3 text-slate-700", {
                 "bg-secondary text-black": isActive(pathname, tab.href),
               })}
-              onClick={() => router.push(tab.href)}
+              onClick={() => {
+                router.push(tab.href);
+                setIsSheetOpen((prev) => !prev);
+              }}
             >
               {tab.icon}
               {tab.label}
