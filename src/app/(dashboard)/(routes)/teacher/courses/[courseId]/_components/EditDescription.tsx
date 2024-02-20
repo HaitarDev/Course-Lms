@@ -10,28 +10,30 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { editTitle } from "@/app/actions/editTitle";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
+import { Textarea } from "@/components/ui/textarea";
+import { editDescription } from "@/app/actions/editDescription";
+
 const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
   id: z.string(),
+  description: z.string().min(1, "description is required"),
 });
 
-export type EditTitleType = z.infer<typeof formSchema>;
+export type EditDescriptionType = z.infer<typeof formSchema>;
 
-function EditTitle({ course }: { course: Course }) {
+function EditDescription({ course }: { course: Course }) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const router = useRouter();
 
   const { toast } = useToast();
 
-  const form = useForm<EditTitleType>({
+  const form = useForm<EditDescriptionType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: course.title,
       id: course.id,
+      description: course.description ? course.description : "",
     },
   });
 
@@ -40,19 +42,19 @@ function EditTitle({ course }: { course: Course }) {
     setIsEdit((prev) => !prev);
   };
 
-  async function onSubmit(values: EditTitleType) {
-    const data = await editTitle(values);
+  async function onSubmit(values: EditDescriptionType) {
+    const data = await editDescription(values);
 
     if (!data?.success) {
       return toast({
         variant: "destructive",
-        title: data?.message,
+        description: data?.message,
       });
     }
 
     if (data?.success) {
       toast({
-        title: data?.message,
+        description: data?.message,
         color: "red",
       });
       handleEdit();
@@ -63,7 +65,7 @@ function EditTitle({ course }: { course: Course }) {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
       <div className="mt-4 bg-muted rounded-md p-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">Course title</h3>
+          <h3 className="text-lg font-medium">Course description</h3>
 
           <Button
             onClick={handleEdit}
@@ -74,7 +76,7 @@ function EditTitle({ course }: { course: Course }) {
               "Cancel"
             ) : (
               <div className="flex items-center gap-1">
-                <Edit size={16} /> Edit title
+                <Edit size={16} /> Edit description
               </div>
             )}
           </Button>
@@ -84,14 +86,15 @@ function EditTitle({ course }: { course: Course }) {
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
-                name="title"
+                name="description"
                 render={({ field }) => (
                   <>
-                    <Input
+                    <Textarea
                       {...field}
                       disabled={formState.isSubmitting}
-                      placeholder="e.g. Advanced digital marketing"
+                      placeholder="e.g. Describe your course"
                     />
+
                     <FormMessage />
                   </>
                 )}
@@ -102,11 +105,13 @@ function EditTitle({ course }: { course: Course }) {
               </Button>
             </form>
           </Form>
+        ) : course.description ? (
+          <h2 className="text-lg text-slate-800">{course.description}</h2>
         ) : (
-          <h2 className="text-lg text-slate-800">{course.title}</h2>
+          <h2 className="text-md text-slate-700 italic">No description</h2>
         )}
       </div>
     </div>
   );
 }
-export default EditTitle;
+export default EditDescription;
