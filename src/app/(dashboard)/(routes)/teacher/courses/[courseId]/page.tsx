@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import EditTitle from "./_components/EditTitle";
 import EditDescription from "./_components/EditDescription";
+import EditImage from "./_components/EditImage";
 async function CoursePage({ params }: { params: { courseId: string } }) {
   const course = await prisma.course.findUnique({
     where: {
@@ -55,6 +56,7 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
       {/* grid */}
       <EditTitle course={course} />
       <EditDescription course={course} />
+      <EditImage course={course} />
     </div>
   );
 }
