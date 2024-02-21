@@ -1,7 +1,7 @@
 import IconWrapper from "@/components/globals/IconWrapper";
 import authOptions from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
-import { ClipboardList, LayoutDashboard } from "lucide-react";
+import { ClipboardList, File, LayoutDashboard } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import EditTitle from "./_components/EditTitle";
@@ -10,14 +10,25 @@ import EditImage from "./_components/EditImage";
 import EditCategory from "./_components/EditCategory";
 import { FaMoneyBill } from "react-icons/fa";
 import EditPrice from "./_components/EditPrice";
+import EditAttachment from "./_components/EditAttachment";
 async function CoursePage({ params }: { params: { courseId: string } }) {
   const course = await prisma.course.findUnique({
     where: {
       id: params.courseId,
     },
+    include: {
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
-
-  const categories = await prisma.category.findMany();
+  const categories = await prisma.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
 
   if (!course) return redirect("/");
 
@@ -87,6 +98,13 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
           </div>
           <div>
             <EditPrice course={course} />
+          </div>
+          <div className="flex items-center gap-2">
+            <IconWrapper icon={<File />} size="lg" />
+            <h2 className="text-xl text-slate-800">Resources & Attachments</h2>
+          </div>
+          <div>
+            <EditAttachment course={course} />
           </div>
         </div>
       </div>
