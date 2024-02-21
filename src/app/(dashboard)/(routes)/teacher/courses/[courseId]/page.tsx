@@ -1,13 +1,13 @@
 import IconWrapper from "@/components/globals/IconWrapper";
-import { Button } from "@/components/ui/button";
 import authOptions from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
-import { Edit, LayoutDashboard } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import EditTitle from "./_components/EditTitle";
 import EditDescription from "./_components/EditDescription";
 import EditImage from "./_components/EditImage";
+import EditCategory from "./_components/EditCategory";
 async function CoursePage({ params }: { params: { courseId: string } }) {
   const course = await prisma.course.findUnique({
     where: {
@@ -15,7 +15,7 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
     },
   });
 
-  console.log(course);
+  const categories = await prisma.category.findMany();
 
   if (!course) return redirect("/");
 
@@ -41,7 +41,7 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
   const textCompletedText = `(${completedFields}/${totalFields})`;
 
   return (
-    <div className="p-5 mt-32 flex flex-col md:block">
+    <div className="p-5 mt-2 flex flex-col md:block">
       <div className="mb-10">
         <h2 className="text-2xl font-semibold">Course Setup</h2>
         <p className="text-slate-700">
@@ -57,6 +57,13 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
       <EditTitle course={course} />
       <EditDescription course={course} />
       <EditImage course={course} />
+      <EditCategory
+        course={course}
+        categories={categories.map((cat) => ({
+          label: cat.name,
+          value: cat.id,
+        }))}
+      />
     </div>
   );
 }
