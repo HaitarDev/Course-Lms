@@ -62,7 +62,7 @@ function EditImage({ course }: { course: Course }) {
     }
   }
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
+    <div className="">
       <div className="mt-4 bg-muted rounded-md p-4">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium">Course Image</h3>

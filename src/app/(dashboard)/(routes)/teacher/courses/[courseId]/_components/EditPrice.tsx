@@ -4,34 +4,36 @@ import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Course } from "@prisma/client";
-import { Edit } from "lucide-react";
+import { Edit, EditIcon, PlusCircle } from "lucide-react";
 import { useState } from "react";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { editTitle } from "@/app/actions/editTitle";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
+import { editPrice } from "@/app/actions/editPrice";
+import { formatPrice } from "@/lib/format";
+
 const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
   id: z.string(),
+  price: z.coerce.number(),
 });
 
-export type EditTitleType = z.infer<typeof formSchema>;
+export type EditPriceType = z.infer<typeof formSchema>;
 
-function EditTitle({ course }: { course: Course }) {
+function EditPrice({ course }: { course: Course }) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const router = useRouter();
 
   const { toast } = useToast();
 
-  const form = useForm<EditTitleType>({
+  const form = useForm<EditPriceType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: course.title,
       id: course.id,
+      price: course.price ? course.price : undefined,
     },
   });
 
@@ -40,19 +42,20 @@ function EditTitle({ course }: { course: Course }) {
     setIsEdit((prev) => !prev);
   };
 
-  async function onSubmit(values: EditTitleType) {
-    const data = await editTitle(values);
+  async function onSubmit(values: EditPriceType) {
+    console.log(values);
+    const data = await editPrice(values);
 
     if (!data?.success) {
       return toast({
         variant: "destructive",
-        title: data?.message,
+        description: data?.message,
       });
     }
 
     if (data?.success) {
       toast({
-        title: data?.message,
+        description: data?.message,
         color: "red",
       });
       handleEdit();
@@ -63,20 +66,24 @@ function EditTitle({ course }: { course: Course }) {
     <div className="">
       <div className="mt-4 bg-muted rounded-md p-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">Course title</h3>
+          <h3 className="text-lg font-medium">Course Price</h3>
 
           <Button
             onClick={handleEdit}
             variant={"ghost"}
             className="text-slate-700 "
           >
-            {isEdit ? (
-              "Cancel"
-            ) : (
+            {!isEdit && !course.price && (
               <div className="flex items-center gap-1">
-                <Edit size={16} /> Edit title
+                <PlusCircle size={16} /> Add price
               </div>
             )}
+            {!isEdit && course.price && (
+              <div className="flex items-center gap-1">
+                <EditIcon size={16} /> Edit price
+              </div>
+            )}
+            {isEdit && <>cancel</>}
           </Button>
         </div>
         {isEdit ? (
@@ -84,14 +91,17 @@ function EditTitle({ course }: { course: Course }) {
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
-                name="title"
+                name="price"
                 render={({ field }) => (
                   <>
                     <Input
                       {...field}
                       disabled={formState.isSubmitting}
-                      placeholder="e.g. Advanced digital marketing"
+                      placeholder="e.g. 99$"
+                      type="number"
+                      step={0.5}
                     />
+
                     <FormMessage />
                   </>
                 )}
@@ -102,11 +112,15 @@ function EditTitle({ course }: { course: Course }) {
               </Button>
             </form>
           </Form>
+        ) : course.price ? (
+          <h2 className="text-lg text-slate-800">
+            {formatPrice(course.price)}
+          </h2>
         ) : (
-          <h2 className="text-lg text-slate-800">{course.title}</h2>
+          <h2 className="text-md text-slate-700 italic">No price yet</h2>
         )}
       </div>
     </div>
   );
 }
-export default EditTitle;
+export default EditPrice;

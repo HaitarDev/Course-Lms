@@ -7,11 +7,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-full">
+    <div className="h-full overflow-hidden">
       <Navbar />
       <main className="h-full flex">
         <SideBar />
-        <div className="w-full">{children}</div>
+        <div className="w-full overflow-scroll">{children}</div>
       </main>
     </div>
   );

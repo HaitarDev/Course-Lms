@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Course } from "@prisma/client";
-import { Edit } from "lucide-react";
+import { Edit, EditIcon, PlusCircle } from "lucide-react";
 import { useState } from "react";
 
 import { z } from "zod";
@@ -12,7 +12,6 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
-import { Textarea } from "@/components/ui/textarea";
 import { editCategory } from "@/app/actions/editCategory";
 import { Combobox } from "@/components/ui/combobox";
 
@@ -41,7 +40,6 @@ function EditCategory({ course, categories }: Props) {
     },
   });
 
-  const { formState } = form;
   const handleEdit = () => {
     setIsEdit((prev) => !prev);
   };
@@ -65,8 +63,13 @@ function EditCategory({ course, categories }: Props) {
       router.refresh();
     }
   }
+
+  const selectedCategory = categories.find(
+    (cat) => cat.value === course.categoryId
+  )?.label;
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
+    <div className="">
       <div className="mt-4 bg-muted rounded-md p-4">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium">Course category</h3>
@@ -76,13 +79,17 @@ function EditCategory({ course, categories }: Props) {
             variant={"ghost"}
             className="text-slate-700 "
           >
-            {isEdit ? (
-              "Cancel"
-            ) : (
+            {!isEdit && !course.categoryId && (
               <div className="flex items-center gap-1">
-                <Edit size={16} /> Edit category
+                <PlusCircle size={16} /> Add category
               </div>
             )}
+            {!isEdit && course.categoryId && (
+              <div className="flex items-center gap-1">
+                <EditIcon size={16} /> Edit category
+              </div>
+            )}
+            {isEdit && <>cancel</>}
           </Button>
         </div>
         {isEdit ? (
@@ -105,8 +112,8 @@ function EditCategory({ course, categories }: Props) {
               </Button>
             </form>
           </Form>
-        ) : course.description ? (
-          <h2 className="text-lg text-slate-800">{course.description}</h2>
+        ) : course.categoryId ? (
+          <h2 className="text-lg text-slate-800">{selectedCategory}</h2>
         ) : (
           <h2 className="text-md text-slate-700 italic">No category</h2>
         )}

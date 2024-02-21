@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Course } from "@prisma/client";
-import { Edit } from "lucide-react";
+import { Edit, EditIcon, PlusCircle } from "lucide-react";
 import { useState } from "react";
 
 import { z } from "zod";
@@ -62,7 +62,7 @@ function EditDescription({ course }: { course: Course }) {
     }
   }
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
+    <div className="">
       <div className="mt-4 bg-muted rounded-md p-4">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-medium">Course description</h3>
@@ -72,13 +72,17 @@ function EditDescription({ course }: { course: Course }) {
             variant={"ghost"}
             className="text-slate-700 "
           >
-            {isEdit ? (
-              "Cancel"
-            ) : (
+            {!isEdit && !course.description && (
               <div className="flex items-center gap-1">
-                <Edit size={16} /> Edit description
+                <PlusCircle size={16} /> Add description
               </div>
             )}
+            {!isEdit && course.description && (
+              <div className="flex items-center gap-1">
+                <EditIcon size={16} /> Edit description
+              </div>
+            )}
+            {isEdit && <>cancel</>}
           </Button>
         </div>
         {isEdit ? (
