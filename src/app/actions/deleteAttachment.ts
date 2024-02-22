@@ -3,9 +3,8 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOptions";
-import { EditAttachmentType } from "../(dashboard)/(routes)/teacher/courses/[courseId]/_components/EditAttachment";
 
-export const editAttachment = async (values: EditAttachmentType) => {
+export const deleteAttatchment = async (fileId: string, courseId: string) => {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -14,18 +13,17 @@ export const editAttachment = async (values: EditAttachmentType) => {
 
     const course = await prisma.course.findUnique({
       where: {
-        id: values.courseId,
+        id: courseId,
         userId: session.user.id,
       },
     });
 
     if (!course) return { success: false, message: "Course not found" };
 
-    await prisma.attachment.create({
-      data: {
-        name: values.url.split("/").pop() || "",
-        url: values.url,
-        courseId: values.courseId,
+    await prisma.attachment.delete({
+      where: {
+        id: fileId,
+        courseId: courseId,
       },
     });
     return { success: true, message: "Attachment updated successfully" };

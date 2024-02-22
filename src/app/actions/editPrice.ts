@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOptions";
-import { EditPriceType } from "../(dashboard)/(routes)/teacher/courses/[courseId]/page";
+import { EditPriceType } from "../(dashboard)/(routes)/teacher/courses/[courseId]/_components/EditPrice";
 
 export const editPrice = async (values: EditPriceType) => {
   try {

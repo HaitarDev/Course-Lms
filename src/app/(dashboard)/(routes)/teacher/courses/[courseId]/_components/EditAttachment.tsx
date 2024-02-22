@@ -3,19 +3,18 @@
 import { Button } from "@/components/ui/button";
 
 import { Attachment, Course } from "@prisma/client";
-import { EditIcon, FileImage, ImageIcon, PlusCircle } from "lucide-react";
+import { EditIcon, FileImage, ImageIcon, PlusCircle, X } from "lucide-react";
 import { useState } from "react";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
-import Image from "next/image";
 import FileUpload from "./UploadImage";
-import { editImage } from "@/app/actions/editImage";
+
 import { editAttachment } from "@/app/actions/editAttachment";
+import { deleteAttatchment } from "@/app/actions/deleteAttachment";
+import { ModalDeleteAttachment } from "./ModalDeleteAttachment";
 
 const formSchema = z.object({
   courseId: z.string(),
@@ -95,20 +94,34 @@ function EditAttachment({ course }: Props) {
             </p>
           </>
         ) : (
-          <div className="relative aspect-video ">
-            {!isEdit && course.imageUrl ? (
-              <Image
-                src={course.imageUrl}
-                alt="course image"
-                fill
-                loading="lazy"
-                className="rounded-md object-cover"
-              />
+          <div className="">
+            {!isEdit && course.attachments.length > 0 ? (
+              <div className="flex gap-2 flex-col">
+                {course.attachments.map((file) => (
+                  <div
+                    className="bg-slate-200 p-2 rounded-md text-slate-800 flex justify-between items-center overflow-hidden"
+                    key={file.id}
+                  >
+                    <div key={file.id}>
+                      {file.name.split("-")[0] +
+                        "." +
+                        file.name.split("-")[1] +
+                        "." +
+                        file.name.split("-")[2] +
+                        "..."}
+                    </div>
+
+                    <ModalDeleteAttachment
+                      courseId={course.id}
+                      fileId={file.id}
+                    />
+                  </div>
+                ))}
+              </div>
             ) : (
-              <div className="relative aspect-video bg-gray-200 rounded-md flex flex-col items-center justify-center">
-                <FileImage size={100} className="text-slate-500" />
-                <p className="text-xs text-muted-foreground mt-4">
-                  You have no image yet
+              <div className=" bg-slate-200 rounded-md text-center p-2">
+                <p className="text-xs text-muted-foreground">
+                  You have no file yet
                 </p>
               </div>
             )}
