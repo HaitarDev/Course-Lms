@@ -8,8 +8,7 @@ import SearchBar from "../ui/SearchBar";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useSession } from "next-auth/react";
+
 import UserBtn from "./UserBtn";
 
 function Navbar() {

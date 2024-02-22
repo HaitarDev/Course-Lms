@@ -23,7 +23,7 @@ function UserBtn() {
           </AvatarFallback>
         </Avatar>
       </PopoverTrigger>
-      <PopoverContent className="mr-3">
+      <PopoverContent className="mr-3 z-50">
         <div className="p-2 bg-white rounded-md shadow-md border">
           <p className="font-medium mb-2 leading-5">{user?.email}</p>
           <Button onClick={handleSignOut} variant={"ghost"} className="w-full">

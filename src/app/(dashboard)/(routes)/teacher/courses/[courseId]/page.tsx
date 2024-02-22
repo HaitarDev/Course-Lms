@@ -11,6 +11,7 @@ import EditCategory from "./_components/EditCategory";
 import { FaMoneyBill } from "react-icons/fa";
 import EditPrice from "./_components/EditPrice";
 import EditAttachment from "./_components/EditAttachment";
+import EditChapter from "./_components/EditChapter";
 async function CoursePage({ params }: { params: { courseId: string } }) {
   const course = await prisma.course.findUnique({
     where: {
@@ -22,6 +23,7 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
           createdAt: "desc",
         },
       },
+      chapters: {},
     },
   });
   const categories = await prisma.category.findMany({
@@ -42,6 +44,7 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
     course.imageUrl,
     course.isPublished,
     course.price,
+    course.attachments.length !== 0,
   ];
 
   const totalFields = fieldsToComplete.length;
@@ -88,7 +91,9 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
             <IconWrapper icon={<ClipboardList />} size="lg" />
             <h2 className="text-xl text-slate-800">Course chapters</h2>
           </div>
-          <div>TODO ...*</div>
+          <div>
+            <EditChapter course={course} />
+          </div>
           <div className="flex items-center gap-2">
             <IconWrapper
               icon={<FaMoneyBill width={300} className="text-2xl" />}

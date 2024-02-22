@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 
 import { Attachment, Course } from "@prisma/client";
-import { EditIcon, FileImage, ImageIcon, PlusCircle, X } from "lucide-react";
+import { EditIcon, File, PlusCircle, X } from "lucide-react";
 import { useState } from "react";
 
 import { z } from "zod";
@@ -13,7 +13,6 @@ import { useToast } from "@/components/ui/use-toast";
 import FileUpload from "./UploadImage";
 
 import { editAttachment } from "@/app/actions/editAttachment";
-import { deleteAttatchment } from "@/app/actions/deleteAttachment";
 import { ModalDeleteAttachment } from "./ModalDeleteAttachment";
 
 const formSchema = z.object({
@@ -99,16 +98,15 @@ function EditAttachment({ course }: Props) {
               <div className="flex gap-2 flex-col">
                 {course.attachments.map((file) => (
                   <div
-                    className="bg-slate-200 p-2 rounded-md text-slate-800 flex justify-between items-center overflow-hidden"
+                    className="bg-slate-200 p-2 rounded-md text-slate-700 flex justify-between items-center overflow-hidden"
                     key={file.id}
                   >
-                    <div key={file.id}>
-                      {file.name.split("-")[0] +
-                        "." +
-                        file.name.split("-")[1] +
-                        "." +
-                        file.name.split("-")[2] +
-                        "..."}
+                    <div
+                      className=" flex justify-between items-center gap-2"
+                      key={file.id}
+                    >
+                      <File />
+                      <p className="line-clamp-1 text-sm">{file.name}</p>
                     </div>
 
                     <ModalDeleteAttachment
