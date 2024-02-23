@@ -79,7 +79,9 @@ function ChapterList({ chapters, courseId }: Props) {
     }
   };
 
-  const handleEdit = (chapterId: string) => {};
+  const handleEdit = (chapterId: string) => {
+    router.push(`/teacher/courses/${courseId}/edit-chapter/${chapterId}`);
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
