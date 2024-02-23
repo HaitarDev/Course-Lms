@@ -5,6 +5,7 @@ import EditChapterTitle from "../_components/EditChapterTitle";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOptions";
+import EditChapterDescription from "../_components/EditChapterDescription";
 
 async function ChapterPage({
   params,
@@ -59,6 +60,7 @@ async function ChapterPage({
 
           <div>
             <EditChapterTitle chapter={chapter} />
+            <EditChapterDescription chapter={chapter} />
           </div>
         </div>
         <div></div>
