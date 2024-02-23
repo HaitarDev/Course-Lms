@@ -23,7 +23,11 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
           createdAt: "desc",
         },
       },
-      chapters: {},
+      chapters: {
+        orderBy: {
+          position: "desc",
+        },
+      },
     },
   });
   const categories = await prisma.category.findMany({

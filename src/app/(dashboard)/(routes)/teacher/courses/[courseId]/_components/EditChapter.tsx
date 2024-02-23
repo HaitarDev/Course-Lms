@@ -2,9 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Chapter, Course } from "@prisma/client";
-import { Edit, EditIcon, PlusCircle } from "lucide-react";
+import { EditIcon, PlusCircle } from "lucide-react";
 import { useState } from "react";
 
 import { z } from "zod";
@@ -14,8 +13,9 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Textarea } from "@/components/ui/textarea";
-import { editDescription } from "@/app/actions/editDescription";
+
 import { editChapter } from "@/app/actions/editChapter";
+import ChapterList from "./ChapterList";
 
 const formSchema = z.object({
   courseId: z.string(),
@@ -110,8 +110,8 @@ function EditChapter({ course }: { course: Course & { chapters: Chapter[] } }) {
               </Button>
             </form>
           </Form>
-        ) : course.description ? (
-          <h2 className="text-lg text-slate-800">{course.description}</h2>
+        ) : course.chapters.length > 0 ? (
+          <ChapterList chapters={course.chapters} courseId={course.id} />
         ) : (
           <h2 className="text-md text-slate-700 italic">No chapters</h2>
         )}

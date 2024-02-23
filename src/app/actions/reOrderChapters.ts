@@ -3,9 +3,9 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOptions";
-import { EditChapterType } from "../(dashboard)/(routes)/teacher/courses/[courseId]/_components/EditChapter";
+import { ReOrderType } from "../(dashboard)/(routes)/teacher/courses/[courseId]/_components/ChapterList";
 
-export const editChapter = async (values: EditChapterType) => {
+export const reOrderChapters = async ({ chapters, courseId }: ReOrderType) => {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -14,31 +14,22 @@ export const editChapter = async (values: EditChapterType) => {
 
     const course = await prisma.course.findUnique({
       where: {
-        id: values.courseId,
+        id: courseId,
         userId: session.user.id,
       },
     });
 
     if (!course) return { success: false, message: "Course not found" };
 
-    const lastChapter = await prisma.chapter.findFirst({
-      where: {
-        courseId: values.courseId,
-      },
-      orderBy: {
-        position: "desc",
-      },
-    });
+    for (let item of chapters) {
+      await prisma.chapter.update({
+        where: {
+          id: item.id,
+        },
+        data: { position: item.position },
+      });
+    }
 
-    const position = lastChapter ? lastChapter.position + 1 : 1;
-
-    await prisma.chapter.create({
-      data: {
-        title: values.title,
-        courseId: values.courseId,
-        position,
-      },
-    });
     return { success: true, message: "Attachment updated successfully" };
   } catch (error) {
     return { success: false, message: "Attachment failed to update" };
