@@ -1,11 +1,12 @@
 import IconWrapper from "@/components/globals/IconWrapper";
 import prisma from "@/lib/prisma";
-import { LayoutDashboard } from "lucide-react";
+import { EyeIcon, LayoutDashboard } from "lucide-react";
 import EditChapterTitle from "../_components/EditChapterTitle";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOptions";
 import EditChapterDescription from "../_components/EditChapterDescription";
+import EditChapterAccess from "../_components/EditChapterAccess";
 
 async function ChapterPage({
   params,
@@ -52,7 +53,7 @@ async function ChapterPage({
 
       <div className="grid grid-cols-1 gap-x-32 md:grid-cols-2 w-full">
         {/* grid */}
-        <div>
+        <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <IconWrapper icon={<LayoutDashboard />} size="lg" />
             <h2 className="text-xl text-slate-800">Customize your course</h2>
@@ -62,8 +63,16 @@ async function ChapterPage({
             <EditChapterTitle chapter={chapter} />
             <EditChapterDescription chapter={chapter} />
           </div>
+          <div className="flex items-center gap-2">
+            <IconWrapper icon={<EyeIcon />} size="lg" />
+            <h2 className="text-xl text-slate-800">Access settings</h2>
+          </div>
+
+          <div>
+            <EditChapterAccess chapter={chapter} />
+          </div>
         </div>
-        <div></div>
+        <div>{/* grid 2  */}</div>
       </div>
     </div>
   );

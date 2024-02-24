@@ -1,8 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Chapter, Course } from "@prisma/client";
 import { Edit } from "lucide-react";
 import { useState } from "react";
@@ -12,38 +17,36 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { editChapterDescription } from "@/app/actions/chapter/editChapterDescription";
-
-import MDEditor from "@uiw/react-md-editor";
+import { Checkbox } from "@/components/ui/checkbox";
+import { editChapterAccess } from "@/app/actions/chapter/editChapterAccess";
 
 const formSchema = z.object({
-  description: z.string().min(1, "Title is required"),
+  isFree: z.boolean().default(false),
   id: z.string(),
 });
 
-export type EditChapterDescription = z.infer<typeof formSchema>;
+export type EditChapterAccessType = z.infer<typeof formSchema>;
 
-function EditChapterDescription({ chapter }: { chapter: Chapter }) {
+function EditChapterAccess({ chapter }: { chapter: Chapter }) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const router = useRouter();
 
   const { toast } = useToast();
 
-  const form = useForm<EditChapterDescription>({
+  const form = useForm<EditChapterAccessType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: chapter.description ? chapter.description : "",
+      isFree: Boolean(chapter.isFree),
       id: chapter.id,
     },
   });
 
-  const { formState } = form;
   const handleEdit = () => {
     setIsEdit((prev) => !prev);
   };
 
-  async function onSubmit(values: EditChapterDescription) {
-    const data = await editChapterDescription(values);
+  async function onSubmit(values: EditChapterAccessType) {
+    const data = await editChapterAccess(values);
 
     if (!data?.success) {
       return toast({
@@ -65,18 +68,18 @@ function EditChapterDescription({ chapter }: { chapter: Chapter }) {
     <div className="">
       <div className="mt-4 bg-muted rounded-md p-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">Chapter description</h3>
+          <h3 className="text-lg font-medium">Chapter access</h3>
 
           <Button
             onClick={handleEdit}
             variant={"ghost"}
-            className="text-slate-700"
+            className="text-slate-700 "
           >
             {isEdit ? (
               "Cancel"
             ) : (
               <div className="flex items-center gap-1">
-                <Edit size={16} /> Edit description
+                <Edit size={16} /> Edit chapter access
               </div>
             )}
           </Button>
@@ -86,12 +89,22 @@ function EditChapterDescription({ chapter }: { chapter: Chapter }) {
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
-                name="description"
+                name="isFree"
                 render={({ field }) => (
-                  <>
-                    <MDEditor {...field} />
+                  <FormItem className="flex gap-2 items-center">
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      id="isFree"
+                    />
+                    <label
+                      htmlFor="isFree"
+                      className="text-sm  leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-slate-800"
+                    >
+                      Mark this as if you want to make this chapter for public
+                    </label>
                     <FormMessage />
-                  </>
+                  </FormItem>
                 )}
               />
 
@@ -100,24 +113,13 @@ function EditChapterDescription({ chapter }: { chapter: Chapter }) {
               </Button>
             </form>
           </Form>
-        ) : !chapter.description ? (
-          <p className="text-sm italic text-slate-600">
-            No description chapter{" "}
-          </p>
+        ) : chapter.isFree ? (
+          <h2 className="text-lg text-slate-800">Free chapter access</h2>
         ) : (
-          <h2>
-            <MDEditor.Markdown
-              source={chapter.description}
-              style={{
-                padding: "1rem 0.5rem",
-                background: "rgb(100 116 139 /10%)",
-              }}
-              className="bg-slate-500"
-            />
-          </h2>
+          <h2 className="text-lg text-slate-800">Private chapter access</h2>
         )}
       </div>
     </div>
   );
 }
-export default EditChapterDescription;
+export default EditChapterAccess;
