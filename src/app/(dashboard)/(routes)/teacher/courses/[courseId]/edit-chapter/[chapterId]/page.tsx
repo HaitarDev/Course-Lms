@@ -1,12 +1,13 @@
 import IconWrapper from "@/components/globals/IconWrapper";
 import prisma from "@/lib/prisma";
-import { EyeIcon, LayoutDashboard } from "lucide-react";
+import { EyeIcon, LayoutDashboard, Video } from "lucide-react";
 import EditChapterTitle from "../_components/EditChapterTitle";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOptions";
 import EditChapterDescription from "../_components/EditChapterDescription";
 import EditChapterAccess from "../_components/EditChapterAccess";
+import EditChapterVideo from "../_components/EditChapterVideo";
 
 async function ChapterPage({
   params,
@@ -17,6 +18,9 @@ async function ChapterPage({
     where: {
       id: params.chapterId,
       courseId: params.courseId,
+    },
+    include: {
+      muxData: true,
     },
   });
 
@@ -51,7 +55,7 @@ async function ChapterPage({
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-x-32 md:grid-cols-2 w-full">
+      <div className="grid grid-cols-1 gap-x-32 gap-y-4 md:grid-cols-2 w-full">
         {/* grid */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
@@ -72,7 +76,17 @@ async function ChapterPage({
             <EditChapterAccess chapter={chapter} />
           </div>
         </div>
-        <div>{/* grid 2  */}</div>
+        {/* grid 2  */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <IconWrapper icon={<Video />} size="lg" />
+            <h2 className="text-xl text-slate-800">Add a video</h2>
+          </div>
+
+          <div>
+            <EditChapterVideo chapter={chapter} courseId={params.courseId} />
+          </div>
+        </div>
       </div>
     </div>
   );
