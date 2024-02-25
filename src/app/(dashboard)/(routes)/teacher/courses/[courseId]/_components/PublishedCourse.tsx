@@ -6,11 +6,13 @@ import { Trash2Icon } from "lucide-react";
 import ModalDelete from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/ModalDeleteAttachment";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
-import { deleteChapter } from "@/app/actions/chapter/deleteChapter";
+
 import { useRouter } from "next/navigation";
-import { publishChapter } from "@/app/actions/chapter/publishChapter";
+
 import { unpublishChapter } from "@/app/actions/chapter/unpublishChapter";
 import { deleteCourse } from "@/app/actions/deleteCourse";
+import { revalidatePath } from "next/cache";
+import { publishCourse } from "@/app/actions/publishCourse";
 
 interface Props {
   course: Course;
@@ -49,10 +51,10 @@ function PublishedCourse({ course }: Props) {
     }
   };
 
-  const handlePublishChapter = async (courseId: string) => {
+  const handlePublishCourse = async (courseId: string) => {
     try {
       setLoading(true);
-      const data = await publishChapter({ chapterId, courseId });
+      const data = await publishCourse(courseId);
 
       if (data?.success) {
         toast({
@@ -61,7 +63,7 @@ function PublishedCourse({ course }: Props) {
         });
         router.refresh();
 
-        // revalidatePath(`/teacher/courses/${courseId}`);
+        revalidatePath(`/teacher/courses/${courseId}`);
       }
 
       if (!data?.success) {
@@ -80,7 +82,7 @@ function PublishedCourse({ course }: Props) {
   const handleUnpublishChapter = async (chapterId: string) => {
     try {
       setLoading(true);
-      const data = await unpublishChapter({ chapterId, courseId });
+      const data = await unpublishChapter(courseId);
 
       if (data?.success) {
         toast({
@@ -114,10 +116,7 @@ function PublishedCourse({ course }: Props) {
           Unpublish
         </Button>
       ) : (
-        <Button
-          size={"sm"}
-          //  onClick={() => handlePublishChapter(chapter.id)}
-        >
+        <Button size={"sm"} onClick={() => handlePublishCourse(course.id)}>
           Publish
         </Button>
       )}
