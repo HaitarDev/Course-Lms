@@ -58,9 +58,9 @@ async function ChapterPage({
   return (
     <div>
       {!chapter.isPublished ? (
-        <div className="h-12 px-4 py-6 flex items-center gap-3 text-sm text-yellow-900 bg-amber-300/90 border-b-2 border-amber-500">
+        <div className="h-12 px-4 py-6 flex items-center gap-3 text-sm text-yellow-900 bg-yellow-200 border-b-2 border-yellow-300">
           <>
-            <MessageSquareWarningIcon />
+            <MessageSquareWarningIcon className="w-5" />
           </>
           <p>
             This chapter is unpublished , it will not be visible in the course
