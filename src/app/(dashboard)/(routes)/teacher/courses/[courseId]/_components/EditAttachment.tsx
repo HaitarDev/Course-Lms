@@ -13,7 +13,8 @@ import { useToast } from "@/components/ui/use-toast";
 import FileUpload from "./UploadImage";
 
 import { editAttachment } from "@/app/actions/editAttachment";
-import { ModalDeleteAttachment } from "./ModalDeleteAttachment";
+import { ModalDelete } from "./ModalDeleteAttachment";
+import { deleteAttatchment } from "@/app/actions/deleteAttachment";
 
 const formSchema = z.object({
   courseId: z.string(),
@@ -54,6 +55,24 @@ function EditAttachment({ course }: Props) {
       router.refresh();
     }
   }
+
+  const handleDeleteFile = async (fileId: string) => {
+    const data = await deleteAttatchment(fileId, course.id);
+    if (!data?.success) {
+      return toast({
+        variant: "destructive",
+        description: data?.message,
+      });
+    }
+    if (data?.success) {
+      toast({
+        description: data?.message,
+        color: "red",
+      });
+
+      router.refresh();
+    }
+  };
   return (
     <div className="">
       <div className="mt-4 bg-muted rounded-md p-4">
@@ -109,10 +128,15 @@ function EditAttachment({ course }: Props) {
                       <p className="line-clamp-1 text-sm">{file.name}</p>
                     </div>
 
-                    <ModalDeleteAttachment
-                      courseId={course.id}
-                      fileId={file.id}
-                    />
+                    <ModalDelete handleDelete={() => handleDeleteFile(file.id)}>
+                      <Button
+                        variant={"ghost"}
+                        className="rounded-full hover:bg-slate-200  hover:scale-125 duration-150 transition-all"
+                        type="button"
+                      >
+                        <X width={15} height={15} />
+                      </Button>
+                    </ModalDelete>
                   </div>
                 ))}
               </div>

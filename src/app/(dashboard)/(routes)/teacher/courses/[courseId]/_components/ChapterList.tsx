@@ -32,6 +32,7 @@ function ChapterList({ chapters, courseId }: Props) {
   const [useChapters, setChapters] = useState(chapters);
 
   const router = useRouter();
+
   const { toast } = useToast();
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -53,6 +54,7 @@ function ChapterList({ chapters, courseId }: Props) {
     }));
 
     reOrder(bulkUpdateData);
+    router.refresh();
   };
 
   const reOrder = async (chapters: Items[]) => {

@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,58 +12,30 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
-import { deleteAttatchment } from "@/app/actions/deleteAttachment";
 import { useToast } from "@/components/ui/use-toast";
+import { ReactNode } from "react";
 
 interface Props {
-  fileId: string;
-  courseId: string;
+  handleDelete: () => void;
+  children: ReactNode;
 }
-export function ModalDeleteAttachment({ fileId, courseId }: Props) {
+export function ModalDelete({ handleDelete, children }: Props) {
   const router = useRouter();
   const { toast } = useToast();
-  const handleDeleteFile = async (fileId: string) => {
-    const data = await deleteAttatchment(fileId, courseId);
-    if (!data?.success) {
-      return toast({
-        variant: "destructive",
-        description: data?.message,
-      });
-    }
-    if (data?.success) {
-      toast({
-        description: data?.message,
-        color: "red",
-      });
 
-      router.refresh();
-    }
-  };
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant={"ghost"}
-          className="rounded-full hover:bg-slate-200  hover:scale-125 duration-150 transition-all"
-          type="button"
-        >
-          <X width={15} height={15} />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Delete File</DialogTitle>
+          <DialogTitle>Are you sure ? </DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this file ?
+            You cant undo this move, make sure before press yes !
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter className="sm:justify-start">
-          <Button
-            type="submit"
-            variant="default"
-            onClick={() => handleDeleteFile(fileId)}
-          >
+          <Button type="submit" variant="default" onClick={handleDelete}>
             Save
           </Button>
           <DialogClose asChild>

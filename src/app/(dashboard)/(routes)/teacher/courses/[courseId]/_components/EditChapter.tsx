@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { editChapter } from "@/app/actions/editChapter";
 import ChapterList from "./ChapterList";
+import { unstable_noStore } from "next/cache";
 
 const formSchema = z.object({
   courseId: z.string(),
@@ -25,6 +26,8 @@ const formSchema = z.object({
 export type EditChapterType = z.infer<typeof formSchema>;
 
 function EditChapter({ course }: { course: Course & { chapters: Chapter[] } }) {
+  unstable_noStore();
+
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const router = useRouter();
 

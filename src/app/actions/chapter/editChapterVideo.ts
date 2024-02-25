@@ -7,10 +7,10 @@ import authOptions from "@/lib/authOptions";
 import { EditVideoType } from "@/app/(dashboard)/(routes)/teacher/courses/[courseId]/edit-chapter/_components/EditChapterVideo";
 import { UTApi } from "uploadthing/server";
 
-const { video } = new Mux({
-  tokenId: process.env.MUX_TOKEN_ID!,
-  tokenSecret: process.env.MUX_TOKEN_SECRET!,
-});
+// const { video } = new Mux({
+//   tokenId: process.env.MUX_TOKEN_ID!,
+//   tokenSecret: process.env.MUX_TOKEN_SECRET!,
+// });
 // Use video here
 
 export const editChapterVideo = async (values: EditVideoType) => {

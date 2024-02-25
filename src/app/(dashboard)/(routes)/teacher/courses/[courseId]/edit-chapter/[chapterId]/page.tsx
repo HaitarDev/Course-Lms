@@ -1,6 +1,12 @@
 import IconWrapper from "@/components/globals/IconWrapper";
 import prisma from "@/lib/prisma";
-import { EyeIcon, LayoutDashboard, Video } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  EyeIcon,
+  LayoutDashboard,
+  MessageSquareWarningIcon,
+  Video,
+} from "lucide-react";
 import EditChapterTitle from "../_components/EditChapterTitle";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
@@ -8,6 +14,9 @@ import authOptions from "@/lib/authOptions";
 import EditChapterDescription from "../_components/EditChapterDescription";
 import EditChapterAccess from "../_components/EditChapterAccess";
 import EditChapterVideo from "../_components/EditChapterVideo";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import PublishedActions from "../_components/PublishedActions";
 
 async function ChapterPage({
   params,
@@ -47,44 +56,66 @@ async function ChapterPage({
   const textCompletedText = `(${completedFieldCount.length}/${totalFields})`;
 
   return (
-    <div className="p-5 my-4 ">
-      <div className="mb-10">
-        <h2 className="text-2xl font-semibold">Chapter Setup</h2>
-        <p className="text-slate-700">
-          Complete all fields {textCompletedText}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-x-32 gap-y-4 md:grid-cols-2 w-full">
-        {/* grid */}
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <IconWrapper icon={<LayoutDashboard />} size="lg" />
-            <h2 className="text-xl text-slate-800">Customize your course</h2>
-          </div>
-
+    <div>
+      {!chapter.isPublished ? (
+        <div className="h-12 px-4 py-6 flex items-center gap-3 text-sm text-yellow-900 bg-amber-300/90 border-b-2 border-amber-500">
+          <>
+            <MessageSquareWarningIcon />
+          </>
+          <p>
+            This chapter is unpublished , it will not be visible in the course
+          </p>
+        </div>
+      ) : null}
+      <Button asChild variant={"ghost"} className="mt-2">
+        <Link href={`/teacher/courses/${params.courseId}`}>
+          <ArrowLeftIcon className="w-4" /> Go back to the course
+        </Link>
+      </Button>
+      <div className="p-5">
+        <div className="mb-10 flex justify-between items-center">
           <div>
-            <EditChapterTitle chapter={chapter} />
-            <EditChapterDescription chapter={chapter} />
+            <h2 className="text-2xl font-semibold">Chapter Setup</h2>
+            <p className="text-slate-700">
+              Complete all fields {textCompletedText}
+            </p>
           </div>
-          <div className="flex items-center gap-2">
-            <IconWrapper icon={<EyeIcon />} size="lg" />
-            <h2 className="text-xl text-slate-800">Access settings</h2>
-          </div>
-
           <div>
-            <EditChapterAccess chapter={chapter} />
+            <PublishedActions chapter={chapter} courseId={params.courseId} />
           </div>
         </div>
-        {/* grid 2  */}
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <IconWrapper icon={<Video />} size="lg" />
-            <h2 className="text-xl text-slate-800">Add a video</h2>
-          </div>
 
-          <div>
-            <EditChapterVideo chapter={chapter} courseId={params.courseId} />
+        <div className="grid grid-cols-1 gap-x-32 gap-y-4 md:grid-cols-2 w-full">
+          {/* grid */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <IconWrapper icon={<LayoutDashboard />} size="lg" />
+              <h2 className="text-xl text-slate-800">Customize your course</h2>
+            </div>
+
+            <div>
+              <EditChapterTitle chapter={chapter} />
+              <EditChapterDescription chapter={chapter} />
+            </div>
+            <div className="flex items-center gap-2">
+              <IconWrapper icon={<EyeIcon />} size="lg" />
+              <h2 className="text-xl text-slate-800">Access settings</h2>
+            </div>
+
+            <div>
+              <EditChapterAccess chapter={chapter} />
+            </div>
+          </div>
+          {/* grid 2  */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <IconWrapper icon={<Video />} size="lg" />
+              <h2 className="text-xl text-slate-800">Add a video</h2>
+            </div>
+
+            <div>
+              <EditChapterVideo chapter={chapter} courseId={params.courseId} />
+            </div>
           </div>
         </div>
       </div>

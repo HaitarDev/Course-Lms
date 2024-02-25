@@ -12,7 +12,10 @@ import { FaMoneyBill } from "react-icons/fa";
 import EditPrice from "./_components/EditPrice";
 import EditAttachment from "./_components/EditAttachment";
 import EditChapter from "./_components/EditChapter";
+import { unstable_noStore } from "next/cache";
 async function CoursePage({ params }: { params: { courseId: string } }) {
+  unstable_noStore();
+
   const course = await prisma.course.findUnique({
     where: {
       id: params.courseId,
