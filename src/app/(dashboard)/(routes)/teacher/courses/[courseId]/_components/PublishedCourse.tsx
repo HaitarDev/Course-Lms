@@ -13,6 +13,7 @@ import { unpublishChapter } from "@/app/actions/chapter/unpublishChapter";
 import { deleteCourse } from "@/app/actions/deleteCourse";
 import { revalidatePath } from "next/cache";
 import { publishCourse } from "@/app/actions/publishCourse";
+import { unpublishCourse } from "@/app/actions/unpublishCourse";
 
 interface Props {
   course: Course;
@@ -79,10 +80,10 @@ function PublishedCourse({ course }: Props) {
     }
   };
 
-  const handleUnpublishChapter = async (chapterId: string) => {
+  const handleUnpublishCourse = async (courseId: string) => {
     try {
       setLoading(true);
-      const data = await unpublishChapter(courseId);
+      const data = await unpublishCourse(courseId);
 
       if (data?.success) {
         toast({
@@ -91,7 +92,7 @@ function PublishedCourse({ course }: Props) {
         });
         router.refresh();
 
-        // revalidatePath(`/teacher/courses/${courseId}`);
+        revalidatePath(`/teacher/courses`);
       }
 
       if (!data?.success) {
@@ -109,10 +110,7 @@ function PublishedCourse({ course }: Props) {
   return (
     <div className="flex gap-4">
       {course.isPublished ? (
-        <Button
-          size={"sm"}
-          // onClick={() => handleUnpublishChapter(chapter.id)}
-        >
+        <Button size={"sm"} onClick={() => handleUnpublishCourse(course.id)}>
           Unpublish
         </Button>
       ) : (

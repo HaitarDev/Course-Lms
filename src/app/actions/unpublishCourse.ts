@@ -4,33 +4,17 @@ import authOptions from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 
-interface Props {
-  chapterId: string;
-  courseId: string;
-}
-export const unpublishChapter = async ({ chapterId, courseId }: Props) => {
+export const unpublishCourse = async (courseId: string) => {
   const session = await getServerSession(authOptions);
   const currCourse = await prisma.course.findUnique({
     where: {
       id: courseId,
     },
   });
-  const currChapter = await prisma.chapter.findUnique({
-    where: {
-      id: chapterId,
-    },
-  });
 
-  if (!currCourse || !session?.user.id || !currChapter)
-    return {
-      success: false,
-      message: "User or Course or Chapter not found ",
-    };
-
-  await prisma.chapter.update({
+  await prisma.course.update({
     where: {
-      id: chapterId,
-      courseId,
+      id: courseId,
     },
     data: {
       isPublished: false,
