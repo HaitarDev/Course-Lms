@@ -19,7 +19,7 @@ interface Props {
   handleDelete: () => void;
   children: ReactNode;
 }
-export function ModalDelete({ handleDelete, children }: Props) {
+export default function ModalDelete({ handleDelete, children }: Props) {
   const router = useRouter();
   const { toast } = useToast();
 
