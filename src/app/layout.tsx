@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 import SessionAuth from "@/components/globals/SessionAuth";
 import { Toaster } from "@/components/ui/toaster";
+import ConfettiProvider from "@/components/globals/ConfettiProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full ">
       <body className={cn(" h-full", inter.className)}>
-        <SessionAuth>
-          <main className="h-full flex">
-            <div className="w-full">{children}</div>
-          </main>
-        </SessionAuth>
+        <ConfettiProvider>
+          <SessionAuth>
+            <main className="h-full flex">
+              <div className="w-full">{children}</div>
+            </main>
+          </SessionAuth>
+        </ConfettiProvider>
         <Toaster />
       </body>
     </html>

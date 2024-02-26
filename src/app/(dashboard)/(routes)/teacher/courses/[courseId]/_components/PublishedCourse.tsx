@@ -14,6 +14,7 @@ import { deleteCourse } from "@/app/actions/deleteCourse";
 import { revalidatePath } from "next/cache";
 import { publishCourse } from "@/app/actions/publishCourse";
 import { unpublishCourse } from "@/app/actions/unpublishCourse";
+import { useConfettiStore } from "../../../../../../../../hooks/use-confetti-store";
 
 interface Props {
   course: Course;
@@ -21,6 +22,7 @@ interface Props {
 
 function PublishedCourse({ course }: Props) {
   const [isLoading, setLoading] = useState(false);
+  const confetti = useConfettiStore();
 
   const { toast } = useToast();
   const router = useRouter();
@@ -63,7 +65,7 @@ function PublishedCourse({ course }: Props) {
           variant: "default",
         });
         router.refresh();
-
+        confetti.onOpen();
         revalidatePath(`/teacher/courses/${courseId}`);
       }
 
