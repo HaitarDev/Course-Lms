@@ -15,6 +15,7 @@ function Navbar() {
   const pathname = usePathname();
 
   const isTeacher = pathname.startsWith("/teacher");
+  const isSearching = pathname === "/search";
 
   const renderTeacherOrExitBtn = isTeacher ? (
     <LoginBtn />
@@ -45,8 +46,8 @@ function Navbar() {
             height={60}
           />
         </div>
-        <div className=" mx-10 lg:w-[600px]">
-          <SearchBar />
+        <div className="hidden lg:block mx-10 lg:w-[600px]">
+          {isSearching && <SearchBar />}
         </div>
         <div className="flex gap-1">
           {renderTeacherOrExitBtn}
