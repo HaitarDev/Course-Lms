@@ -3,7 +3,7 @@
 import { useConfettiStore } from "../../../hooks/use-confetti-store";
 import ReactConfetti from "react-confetti";
 
-function ConfettiProvider({ children }: { children: React.ReactNode }) {
+export function ConfettiProvider() {
   const confetti = useConfettiStore();
 
   if (!confetti.isOpen) return null;
@@ -15,9 +15,6 @@ function ConfettiProvider({ children }: { children: React.ReactNode }) {
       onConfettiComplete={() => {
         confetti.onClose();
       }}
-    >
-      {children}
-    </ReactConfetti>
+    />
   );
 }
-export default ConfettiProvider;

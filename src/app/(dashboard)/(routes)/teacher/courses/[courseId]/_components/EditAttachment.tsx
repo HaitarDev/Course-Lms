@@ -13,7 +13,7 @@ import { useToast } from "@/components/ui/use-toast";
 import FileUpload from "./UploadImage";
 
 import { editAttachment } from "@/app/actions/editAttachment";
-import { ModalDelete } from "./ModalDeleteAttachment";
+import ModalDelete from "./ModalDeleteAttachment";
 import { deleteAttatchment } from "@/app/actions/deleteAttachment";
 
 const formSchema = z.object({

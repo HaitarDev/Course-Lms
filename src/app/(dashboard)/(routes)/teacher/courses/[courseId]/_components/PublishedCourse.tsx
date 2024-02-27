@@ -9,7 +9,6 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { unpublishChapter } from "@/app/actions/chapter/unpublishChapter";
 import { deleteCourse } from "@/app/actions/deleteCourse";
 import { revalidatePath } from "next/cache";
 import { publishCourse } from "@/app/actions/publishCourse";

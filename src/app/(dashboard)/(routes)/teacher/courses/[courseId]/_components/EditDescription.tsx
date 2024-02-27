@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { Course } from "@prisma/client";
 import { Edit, EditIcon, PlusCircle } from "lucide-react";
 import { useState } from "react";
