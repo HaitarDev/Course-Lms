@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import qs from "query-string";
 import { Category } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -11,6 +12,7 @@ import {
   FcLandscape,
   FcHome,
 } from "react-icons/fc";
+import { url } from "inspector";
 
 interface Props {
   categories: Category[];
@@ -34,11 +36,21 @@ function Categories({ categories }: Props) {
   const params = useSearchParams();
   const pathname = usePathname();
   const getCategoryParam = params.get("category");
+  const getQueryParam = params.get("query");
 
   const handleSearch = (categoryId: string) => {
-    getCategoryParam === categoryId
-      ? router.push(pathname)
-      : router.push(`/search?category=${categoryId}`);
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: {
+          query: getQueryParam,
+          category: categoryId === getCategoryParam ? null : categoryId,
+        },
+      },
+      { skipNull: true, skipEmptyString: true }
+    );
+
+    router.push(url);
   };
 
   return (

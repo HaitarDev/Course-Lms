@@ -19,7 +19,7 @@ function IconWrapper({
   return (
     <div
       className={cn(
-        "rounded-full flex justify-center items-center p-1 shadow-sm",
+        "rounded-full flex justify-center items-center text-center p-1 shadow-sm",
         {
           "bg-primary/80 text-yellow-300": primary,
           "bg-blue-500/80 text-blue-700": secondary,
