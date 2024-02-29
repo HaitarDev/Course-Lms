@@ -175,6 +175,7 @@ model Purchase {
   updatedAt DateTime @updatedAt
 
   @@index([courseId])
+  @@unique([courseId, userId])
 }
 
 model stripeCustomer { 
