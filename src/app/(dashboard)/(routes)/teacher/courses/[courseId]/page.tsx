@@ -22,6 +22,7 @@ import { unstable_noStore } from "next/cache";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PublishedCourse from "./_components/PublishedCourse";
+import Banner from "@/components/globals/Banner";
 async function CoursePage({ params }: { params: { courseId: string } }) {
   unstable_noStore();
 
@@ -75,14 +76,10 @@ async function CoursePage({ params }: { params: { courseId: string } }) {
   return (
     <div>
       {!course.isPublished ? (
-        <div className="h-12 px-4 py-6 flex items-center gap-3 text-sm text-yellow-900 bg-yellow-200 border-b-2 border-yellow-300">
-          <>
-            <MessageSquareWarningIcon className="w-5" />
-          </>
-          <p>
-            This course is unpublished , it will not be visible to the public
-          </p>
-        </div>
+        <Banner
+          label="This course is unpublished , it will not be visible to the public
+       "
+        />
       ) : null}
 
       <div className="p-5 my-4">
