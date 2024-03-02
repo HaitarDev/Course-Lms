@@ -14,6 +14,7 @@ interface Props {
   nextChapterId?: string;
   isLocked: boolean;
   completedOnEnd: boolean;
+  videoUrl: string;
 }
 function VideoPlayer({
   chapterId,
@@ -23,6 +24,7 @@ function VideoPlayer({
   playbackId,
   title,
   nextChapterId,
+  videoUrl,
 }: Props) {
   const [isReady, setIsReady] = useState(false);
   const { toast } = useToast();
@@ -48,7 +50,7 @@ function VideoPlayer({
           onCanPlay={() => setIsReady(true)}
           onEnded={() => {}}
           autoPlay
-          playbackId={playbackId}
+          src={videoUrl}
         />
       )}
     </div>

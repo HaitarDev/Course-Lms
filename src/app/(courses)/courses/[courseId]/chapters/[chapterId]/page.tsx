@@ -7,6 +7,7 @@ import VideoPlayer from "./_components/VideoPlayer";
 import CourseEnrollBtn from "./_components/CourseEnrollBtn";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
+import MuxPlayer from "@mux/mux-player-react";
 
 async function ChapterPage({
   params,
@@ -55,6 +56,7 @@ async function ChapterPage({
             playbackId={videoUrl!}
             isLocked={isLocked}
             completedOnEnd={completedOnEnd}
+            videoUrl={videoUrl!}
           />
         </div>
         <div>
