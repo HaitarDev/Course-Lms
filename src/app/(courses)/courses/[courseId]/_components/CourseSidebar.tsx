@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import CourseSidebarItem from "./CourseSidebarItem";
 import prisma from "@/lib/prisma";
+import CourseProgress from "@/components/globals/CourseProgress";
 
 interface Props {
   course: Course & {
@@ -11,7 +12,7 @@ interface Props {
       userProgress: UserProgress[] | null;
     })[];
   };
-  progressCount: number | undefined;
+  progressCount: number;
 }
 
 async function CourseSidebar({ course, progressCount }: Props) {
@@ -35,7 +36,11 @@ async function CourseSidebar({ course, progressCount }: Props) {
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="p-8 border-b flex flex-col">
         <h1 className="font-semibold">{course.title}</h1>
-        {/* check purchase w/ progress */}
+        {purchase && (
+          <div className="mt-10">
+            <CourseProgress variant="success" value={progressCount} />
+          </div>
+        )}
       </div>
       {course.chapters.map((chapter) => (
         <CourseSidebarItem

@@ -7,7 +7,7 @@ import VideoPlayer from "./_components/VideoPlayer";
 import CourseEnrollBtn from "./_components/CourseEnrollBtn";
 import { Separator } from "@/components/ui/separator";
 import { File } from "lucide-react";
-import MuxPlayer from "@mux/mux-player-react";
+import CourseProgressBtn from "./_components/CourseProgressBtn";
 
 async function ChapterPage({
   params,
@@ -62,8 +62,14 @@ async function ChapterPage({
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2"> {chapter.title}</h2>
+
             {purchase ? (
-              <div>{/* add progrss btn */}</div>
+              <CourseProgressBtn
+                chapterId={params.chapterId}
+                courseId={params.courseId}
+                nextChapterId={nextChapter?.id}
+                isCompleted={!!userProgress?.isCompleted}
+              />
             ) : (
               <CourseEnrollBtn
                 courseId={params.courseId}
