@@ -21,9 +21,9 @@ function IconWrapper({
       className={cn(
         "rounded-full flex justify-center items-center text-center p-1 shadow-sm",
         {
-          "bg-primary/80 text-yellow-300": primary,
-          "bg-blue-500/80 text-blue-700": secondary,
-          "bg-emerald-500/90 text-emerald-800": success,
+          "bg-primary/40 text-yellow-800": primary,
+          "bg-blue-300/90 text-blue-800": secondary,
+          "bg-emerald-300/90 text-emerald-800": success,
           "w-8 h-8": size === "sm",
           "w-9 h-9": size === "md",
           "w-10 h-10": size === "lg",
